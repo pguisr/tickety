@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Line, LineChart, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/lib/supabase';
+import { startOfDay, endOfDay, subDays, format } from 'date-fns';
 
 // Interface para dados de vendas
 interface SalesData {
@@ -11,9 +14,10 @@ const SalesChart = () => {
   const [period, setPeriod] = useState("7D");
   const [data, setData] = useState<SalesData[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
 
-  // Gerar dados reais baseados no período
-  const generateRealData = (days: number): SalesData[] => {
+  // Gera a estrutura base de dias com zero, no formato dd/MM
+  const generateEmptySeries = (days: number): SalesData[] => {
     const data: SalesData[] = [];
     const today = new Date();
     
@@ -21,7 +25,7 @@ const SalesChart = () => {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       data.push({
-        date: date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }),
+        date: format(date, 'dd/MM'),
         vendas: 0 // Inicialmente 0, será atualizado quando tivermos dados reais
       });
     }
@@ -29,25 +33,81 @@ const SalesChart = () => {
     return data;
   };
 
+  // Busca dados reais no Supabase agregando por dia (quantidade de ingressos pagos)
+  const fetchSalesData = async (days: number) => {
+    if (!user?.id) {
+      setData(generateEmptySeries(days));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const now = new Date();
+      const dateFrom = startOfDay(subDays(now, days - 1)).toISOString();
+      const dateTo = endOfDay(now).toISOString();
+
+      // Buscar pedidos pagos com seus itens, vinculados a eventos do organizador atual
+      const { data: orders, error } = await supabase
+        .from('orders')
+        .select(`
+          created_at,
+          order_items (
+            quantity,
+            batches (
+              events!inner (
+                user_id
+              )
+            )
+          )
+        `)
+        .eq('status', 'paid')
+        .gte('created_at', dateFrom)
+        .lte('created_at', dateTo)
+        .filter('order_items.batches.events.user_id', 'eq', user.id);
+
+      if (error) throw new Error(error.message);
+
+      // Mapa base com todos os dias zerados
+      const base = generateEmptySeries(days);
+      const totalsByDay = new Map(base.map(d => [d.date, 0]));
+
+      // Agregar quantidade vendida por dia
+      orders?.forEach((order: any) => {
+        const dayKey = format(new Date(order.created_at), 'dd/MM');
+        const orderTotal = order.order_items?.reduce((sum: number, item: any) => sum + (item.quantity || 0), 0) || 0;
+        totalsByDay.set(dayKey, (totalsByDay.get(dayKey) || 0) + orderTotal);
+      });
+
+      const series: SalesData[] = base.map(d => ({ date: d.date, vendas: totalsByDay.get(d.date) || 0 }));
+      setData(series);
+    } catch (err) {
+      console.error('Erro ao carregar dados do gráfico de vendas:', err);
+      setData(generateEmptySeries(days));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Atualiza os dados quando o período muda
   const handlePeriodChange = (newPeriod: string) => {
     if (!newPeriod) return;
     setPeriod(newPeriod);
     const days = parseInt(newPeriod);
-    setData(generateRealData(days));
+    fetchSalesData(days);
   };
 
   useEffect(() => {
-    // Inicializar com dados vazios
-    setData(generateRealData(7));
-    setLoading(false);
-  }, []);
+    // Inicializar com dados reais de 7 dias
+    fetchSalesData(7);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   return (
     <div className="glass-card p-6 rounded-xl">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h2 className="text-base font-medium text-white">Vendas</h2>
+        <h2 className="text-base font-medium text-white">Gráfico de Faturamento</h2>
         
         {/* Filtros de Período */}
         <div className="flex bg-black/20 rounded-lg p-1 gap-1 w-full sm:w-auto">

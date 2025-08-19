@@ -9,7 +9,7 @@ import { ReservationService } from "@/services/reservationService";
 
 import { useSmoothScroll } from "@/hooks/use-smooth-scroll";
 import Index from "./pages/Index";
-import DashboardPage from "./pages/DashboardPage";
+import Dashboard from "./pages/Dashboard";
 import Event from "./pages/Event";
 import EditEvent from "./pages/EditEvent";
 import CreateEvent from "./pages/CreateEvent";
@@ -17,6 +17,7 @@ import Settings from "./pages/Settings";
 import Checkout from "./pages/Checkout";
 import Auth from "./pages/Auth";
 import MyTickets from "./pages/MyTickets";
+import Participants from "./pages/Participants";
 import NotFound from "./pages/NotFound";
 import PageTransition from "./components/PageTransition";
 
@@ -82,12 +83,17 @@ const AnimatedRoutes = () => {
         } />
         <Route path="/dashboard" element={
           <ProtectedRoute>
-            <DashboardPage />
+            <Dashboard />
           </ProtectedRoute>
         } />
         <Route path="/meus-ingressos" element={
           <ProtectedRoute>
             <MyTickets />
+          </ProtectedRoute>
+        } />
+        <Route path="/participantes" element={
+          <ProtectedRoute>
+            <Participants />
           </ProtectedRoute>
         } />
         <Route path="/eventos/:url/editar" element={

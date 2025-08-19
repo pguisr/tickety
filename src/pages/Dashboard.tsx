@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import AuthenticatedHeader from '@/components/AuthenticatedHeader';
-import Dashboard from '@/components/Dashboard';
+import DashboardComponent from '@/components/Dashboard';
 import PageTransition from '@/components/PageTransition';
 import { useToast } from '@/hooks/use-toast';
 
-const DashboardPage: React.FC = () => {
+const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
   const { toast } = useToast();
@@ -43,11 +43,11 @@ const DashboardPage: React.FC = () => {
       <AuthenticatedHeader />
       <PageTransition>
         <main className="container mx-auto px-4 py-6 max-w-7xl">
-          <Dashboard />
+          <DashboardComponent />
         </main>
       </PageTransition>
     </div>
   );
 };
 
-export default DashboardPage;
+export default Dashboard;

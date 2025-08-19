@@ -47,14 +47,21 @@ export const getDisplayName = (fullName: string): string => {
 };
 
 /**
- * Obtém as iniciais do nome (primeira letra do primeiro nome)
+ * Obtém as iniciais do nome (primeira e segunda letra, ou primeira letra se só uma palavra)
  */
 export const getInitials = (fullName: string): string => {
-  const { firstName } = splitName(fullName);
+  const trimmedName = fullName.trim();
+  if (!trimmedName) return '';
   
-  if (!firstName) return '';
+  const words = trimmedName.split(' ').filter(word => word.length > 0);
   
-  return firstName.charAt(0).toUpperCase();
+  if (words.length === 1) {
+    // Se só uma palavra, retorna as duas primeiras letras
+    return words[0].substring(0, 2).toUpperCase();
+  }
+  
+  // Se múltiplas palavras, retorna primeira letra de cada palavra (máximo 2)
+  return words.slice(0, 2).map(word => word[0]).join('').toUpperCase();
 };
 
 /**

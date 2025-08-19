@@ -86,6 +86,32 @@
     animation: fadeInUp 0.4s ease-out forwards;
   }
 
+  /* Delay para animações */
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  /* Fix para hover persistente do calendário */
+  .rdp-day {
+    background-color: transparent !important;
+    color: white !important;
+  }
+  
+  .rdp-day:hover {
+    background-color: #6EFC2A !important;
+    color: black !important;
+  }
+  
+  .rdp-day_selected {
+    background-color: #6EFC2A !important;
+    color: black !important;
+  }
+  
+  .rdp-day_selected:hover {
+    background-color: #6EFC2A !important;
+    color: black !important;
+  }
+
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -117,6 +143,11 @@
 /* Garantir hover padrão para botões verdes */
 .bg-primary-green:hover {
   background-color: rgb(110, 252, 42, 0.9) !important;
+}
+
+/* Hover padrão para botões com verde neon */
+.hover-green-button {
+  @apply text-gray-400 hover:bg-primary-green hover:text-black transition-colors;
 }
 }
 

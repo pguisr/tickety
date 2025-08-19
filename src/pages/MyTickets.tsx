@@ -32,7 +32,7 @@ const MyTicketsContent: React.FC = () => {
   const getTicketStatus = (orderStatus: string) => {
     switch (orderStatus) {
       case 'paid':
-        return { status: 'paid', label: 'Pago', color: 'bg-green-500/20 text-green-400' };
+        return { status: 'paid', label: 'Pago', color: 'bg-primary-green/20 text-primary-green border-0' };
       case 'cancelled':
         return { status: 'cancelled', label: 'Cancelado', color: 'bg-red-500/20 text-red-400' };
       case 'pending':
@@ -124,7 +124,7 @@ const MyTicketsContent: React.FC = () => {
                           {ticket.ticketType}
                         </p>
                       </div>
-                      <Badge className={`${ticketStatus.color} border-0 font-medium`}>
+                      <Badge className={`${ticketStatus.color} font-medium`}>
                         {ticketStatus.label}
                       </Badge>
                     </div>
@@ -159,7 +159,7 @@ const MyTicketsContent: React.FC = () => {
                               className="justify-between h-12 border-gray-700 text-white hover:bg-primary-green/10 hover:border-primary-green/30 hover:text-primary-green transition-all duration-200 group"
                               onClick={() => handleQRCodeClick(ticket, ticketNumber)}
                             >
-                              <span className="text-sm font-mono text-gray-300 group-hover:text-primary-green">
+                              <span className="text-sm font-mono text-gray-300 group-hover:text-primary-green truncate">
                                 {ticketNumber}
                               </span>
                               <QrCode className="h-4 w-4 text-gray-400 group-hover:text-primary-green" />

@@ -308,7 +308,7 @@ const EventsTable: React.FC = () => {
   return (
     <div className="glass-card rounded-lg p-6 w-full">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-base font-medium text-white">Eventos</h2>
+        <h2 className="text-base font-medium text-white">Meus Eventos</h2>
         <div className="flex items-center gap-4">
           {/* Opção de arquivos removida */}
         </div>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import KPICard from './KPICard';
 import SalesChart from './SalesChart';
 import EventsTable from './EventsTable';
+import SalesTransactions from './SalesTransactions';
 import Sidebar from './Sidebar';
 import { useEventStats } from '@/hooks/use-events';
 import { useAuth } from '@/contexts/AuthContext';
@@ -48,6 +49,10 @@ const Dashboard: React.FC = () => {
         
         <div className="mb-8">
           <SalesChart />
+        </div>
+        
+        <div className="mb-8">
+          <SalesTransactions />
         </div>
         
         <div>

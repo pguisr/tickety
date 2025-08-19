@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, HelpCircle, Settings, LayoutDashboard, FileText, Palette, QrCode, MessageCircle } from 'lucide-react';
+import { Plus, HelpCircle, Settings, LayoutDashboard, FileText, Palette, QrCode, MessageCircle, Users, DollarSign, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,45 @@ const Sidebar: React.FC = () => {
             <Plus size={18} />
             <span>Criar Novo Evento</span>
           </Button>
+        </div>
+
+        {/* Botões Secundários */}
+        <div className="flex flex-col space-y-0">
+          {/* Botão Participantes */}
+          <div>
+            <Button 
+              onClick={() => navigate('/participantes')}
+              variant="ghost"
+              className="w-full text-gray-400 gap-2 h-10 hover:bg-transparent justify-start text-base"
+            >
+              <Users size={16} />
+              <span>Participantes</span>
+            </Button>
+          </div>
+
+          {/* Botão Financeiro */}
+          <div>
+            <Button 
+              onClick={() => navigate('/financeiro')}
+              variant="ghost"
+              className="w-full text-gray-400 gap-2 h-10 hover:bg-transparent justify-start text-base"
+            >
+              <DollarSign size={16} />
+              <span>Financeiro</span>
+            </Button>
+          </div>
+
+          {/* Botão Blog */}
+          <div>
+            <Button 
+              onClick={() => navigate('/blog')}
+              variant="ghost"
+              className="w-full text-gray-400 gap-2 h-10 hover:bg-transparent justify-start text-base"
+            >
+              <BookOpen size={16} />
+              <span>Blog</span>
+            </Button>
+          </div>
         </div>
         
 
