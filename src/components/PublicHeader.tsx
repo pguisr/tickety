@@ -108,7 +108,7 @@ const PublicHeader: React.FC = () => {
                       handleEventsClick();
                     }}
                   >
-                    Eventos
+                    Explorar
                   </a>
                 </li>
                 <li>
@@ -171,7 +171,7 @@ const PublicHeader: React.FC = () => {
                     handleEventsClick();
                   }}
                 >
-                  Eventos
+                  Explorar
                 </a>
               </li>
               <li>

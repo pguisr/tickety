@@ -138,7 +138,7 @@ const AuthenticatedHeader: React.FC = () => {
                   navigate('/eventos');
                 }}
               >
-                Eventos
+                Explorar
               </a>
               <a 
                 href="/dashboard" 
